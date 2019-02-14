@@ -1,0 +1,19 @@
+{
+  "name": "personal-case-spectrum",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "create-hobby-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lemeza/personal-case-spectrum.git"
+  },
+  "author": "Nick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lemeza/personal-case-spectrum/issues"
+  },
+  "homepage": "https://github.com/Lemeza/personal-case-spectrum#readme"
+}
