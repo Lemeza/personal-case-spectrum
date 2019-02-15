@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class Exchange {
 
   constructor(id, name, country) {
