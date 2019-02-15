@@ -1,1 +1,1 @@
-# personal-case-spectrum
+# Nick's personal case
