@@ -12,13 +12,13 @@ module.exports = class Cryptocurrency {
       database: 'personalcase'
     });
 
-    this.connection.connect = function (err) {
+    this.connection.connect(function (err) {
       if (err) {
         throw err;
       } else {
         console.log(`Connected!`);
       }
-    };
+    });
   }
 
   stop() {
