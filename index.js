@@ -26,3 +26,5 @@ cryptocurrencyRepository.query('INSERT into cryptocurrency set ?', [crypto]).the
 }, error => {
   console.log(`Error: ${error}`);
 });
+
+cryptocurrencyRepository.stop();
