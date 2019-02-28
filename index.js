@@ -1,6 +1,6 @@
 "use strict";
 
-let Cryptocurrency = require('./modules/cryptocurrency');
+let Cryptocurrency = require('./modules/cryptocurrency_db');
 
 console.log(`Starting index.js`);
 
