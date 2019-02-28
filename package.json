@@ -4,7 +4,8 @@
   "description": "create-hobby-app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test-init": "./node_modules/jasmine/bin/jasmine.js init",
+    "test": "./node_modules/jasmine/bin/jasmine.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/Lemeza/personal-case-spectrum#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "jasmine": "^3.3.1",
     "mocha": "^5.2.0"
   },
   "dependencies": {
