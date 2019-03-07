@@ -1,64 +1,43 @@
 "use strict";
 
-const mysql = require('mysql');
-
 module.exports = class Cryptocurrency {
 
-  constructor() {
-    this.connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'nick',
-      password: 'nick2018!',
-      database: 'personalcase'
-    });
-
-    this.connection.connect(function (err) {
-      if (err) {
-        throw err;
-      } else {
-        console.log(`Connected!`);
-      }
-    });
+  constructor(id, name, supply, protocol) {
+    this._id = id;
+    this._name = name;
+    this._supply = supply;
+    this._protocol = protocol;
   }
 
-  stop() {
-    this.connection.end(function() {
-      console.log("Disconnected");
-    });
+  get id() {
+    return this._id;
   }
 
-  query(sql, args) {
-    return new Promise((resolve, reject) => {
-      this.connection.query(sql, args, (err, rows) => {
-        if (!err) {
-          resolve(rows);
-        } else {
-          reject(err);
-        }
-      });
-    });
+  get name() {
+    return this._name;
   }
 
-  insert(cryptocurrency) {
-    return new Promise((resolve, reject) => {
-      this.connection.query("insert into cryptocurrency set ?", [cryptocurrency], (err, result) => {
-        if (!err) {
-          cryptocurrency.id = result.insertId;
-          resolve(cryptocurrency);
-        } else {
-          reject(err);
-        }
-      });
-    });
+  get supply() {
+    return this._supply;
   }
 
-  createCrypto(name, supply, protocol) {
-    let crypto = {
-      name: name,
-      supply: supply,
-      protocol: protocol
-    }
-    return this.insert(crypto);
+  get protocol() {
+    return this._protocol;
   }
 
+  set id(id) {
+    this._id = id;
+  }
+
+  set name(name) {
+    this._name = name;
+  }
+
+  set supply(supply) {
+    return this._supply = supply;
+  }
+
+  set protocol(protocol) {
+    return this._protocol = protocol;
+  }
 }
