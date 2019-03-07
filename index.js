@@ -91,13 +91,13 @@ app.post('/api/cryptocurrency', (req, res) => {
 app.put('/api/cryptocurrency/:id', (req, res) => {
     let id = req.params.id
     let inputCrypto = req.body;
-    console.log(`: Changing cryptocurrency with id: ${id}`);
+    console.log(`Changing cryptocurrency with id: ${id}`);
     connection.query(
         'UPDATE cryptocurrency SET name = ?, supply = ?, protocol = ? WHERE id = ?',
         [inputCrypto.name, inputCrypto.supply, inputCrypto.protocol, id],
         (err, result) => {
             if (!err) {
-                console.log(`: Changed ${result.changedRows} row(s)`);
+                console.log(`Changed ${result.changedRows} row(s)`);
                 connection.query('SELECT * FROM cryptocurrency WHERE id = ?', [id], (err, rows) => {
                     if (!err) {
                         console.log('Data received from Database:');
@@ -126,6 +126,110 @@ app.put('/api/cryptocurrency/:id', (req, res) => {
 app.delete('/api/cryptocurrency/:id', (req, res) => {
     let id = req.params.id;
     connection.query('DELETE FROM cryptocurrency WHERE id = ?', [id], (err, result) => {
+        if (!err) {
+            console.log(`Deleted ${result.affectedRows} row(s)`);
+            res.status(204).end();
+        } else {
+            throw err;
+        }
+    });
+});
+
+app.get('/api/exchange', (req, res) => {
+    connection.query('SELECT * FROM exchange', (err, exchange) => {
+        if (!err) {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(exchange));
+        } else {
+            throw err;
+        }
+    });
+});
+
+app.get('/api/exchange/:id', (req, res) => {
+    let id = req.params.id;
+    connection.query('SELECT * FROM exchange WHERE id = ?', id, (err, rows) => {
+        if (!err) {
+            let exchange = rows[0];
+            if (exchange) {
+                console.log(`Exchange ${id} returned (${req.connection.remoteAddress})!`);
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(exchange));
+            } else {
+                console.log(`Exchange ${id} doesn't exist (${req.connection.remoteAddress})!`);
+                res.setHeader('Content-Type', 'application/json');
+                res.status(404).end();
+            }
+        } else {
+            throw err;
+        }
+    });
+});
+
+app.post('/api/exchange', (req, res) => {
+    let exchange = req.body;
+    connection.query('INSERT INTO exchange SET ?', exchange, (err, result) => {
+        if (!err) {
+            res.setHeader('Content-Type', 'application/json');
+            connection.query('SELECT * FROM exchange WHERE id = ?', result.insertId, (err, rows) => {
+                if (!err) {
+                    let exchange = rows[0];
+                    if (exchange) {
+                        res.setHeader('Content-Type', 'application/json');
+                        res.status(201).end(JSON.stringify(exchange));
+                        console.log(`Exchange ${JSON.stringify(exchange)} added (${req.connection.remoteAddress})!`);
+                    } else {
+                        res.setHeader('Content-Type', 'application/json');
+                        res.status(404).end();
+                    }
+                } else {
+                    throw err;
+                }
+            });
+        } else {
+            throw err;
+        }
+    });
+});
+
+app.put('/api/exchange/:id', (req, res) => {
+    let id = req.params.id
+    let inputExchange = req.body;
+    console.log(`Changing exchange with id: ${id}`);
+    connection.query(
+        'UPDATE exchange SET name = ?, country = ? WHERE id = ?',
+        [inputExchange.name, inputExchange.country, id],
+        (err, result) => {
+            if (!err) {
+                console.log(`Changed ${result.changedRows} row(s)`);
+                connection.query('SELECT * FROM exchange WHERE id = ?', [id], (err, rows) => {
+                    if (!err) {
+                        console.log('Data received from Database:');
+                        let exchange = rows[0];
+                        console.log(exchange);
+                        if (exchange) {
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify(exchange));
+                        } else {
+                            res.setHeader('Content-Type', 'application/json');
+                            console.log(`: Not found! (Request from ${req.connection.remoteAddress})`);
+                            res.status(404).end();
+                        }
+                    } else {
+                        throw err;
+                    }
+                });
+            }
+            else {
+                throw err;
+            }
+        }
+    );
+});
+
+app.delete('/api/exchange/:id', (req, res) => {
+    let id = req.params.id;
+    connection.query('DELETE FROM exchange WHERE id = ?', [id], (err, result) => {
         if (!err) {
             console.log(`Deleted ${result.affectedRows} row(s)`);
             res.status(204).end();
