@@ -344,20 +344,20 @@ app.delete('/api/price/:id', (req, res) => {
     });
 });
 
-app.get('/api', (req, res) => {
-    res.json({
-        message: 'Welcome to the API'
-    });
-});
-
-app.post('/api/posts', verifyToken, (req, res) => {
-    jwt.verify(req.token, 'its_a_secret_to_everyone', (err, authData) => {
+// Obtains a list of all cryptos in the database if the authorization token is correct, else it will return 403 Forbidden
+// In Postman you'll have to add a key (authorization) with the value (bearer <token_value>)
+app.get('/api/cryptoJWT', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'its_a_secret_to_everyone', (err) => {
         if (err) {
             res.sendStatus(403);
         } else {
-            res.json({
-                message: 'Post created...',
-                authData
+            connection.query('SELECT * FROM cryptocurrency', (err, cryptocurrency) => {
+                if (!err) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(cryptocurrency));
+                } else {
+                    throw err;
+                }
             });
         }
     });
@@ -372,7 +372,11 @@ app.post('/api/login', (req, res) => {
     }
     // Signs the JSON Web Token with the private key (its_a_secret_to_everyone) which expires in 10 minutes!
     jwt.sign({ user }, 'its_a_secret_to_everyone', { expiresIn: '10m' }, (err, token) => {
-        res.json({ token });
+        if (err) {
+            throw err;
+        } else {
+            res.json({ token });
+        }
     });
 });
 
