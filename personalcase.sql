@@ -28,7 +28,7 @@ CREATE TABLE `cryptocurrency` (
   `supply` bigint(20) DEFAULT NULL,
   `protocol` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `cryptocurrency` (
 
 LOCK TABLES `cryptocurrency` WRITE;
 /*!40000 ALTER TABLE `cryptocurrency` DISABLE KEYS */;
-INSERT INTO `cryptocurrency` VALUES (2,'ethereum',106000000,'Proof of Stake');
+INSERT INTO `cryptocurrency` VALUES (1,'bitcoin',21000000,'Proof of Work'),(2,'ethereum',104000000,'Proof of Work'),(3,'ripple',100000000000,'Proof of Work'),(4,'Litecoin',84000000,'Proof of Work'),(5,'EOS',1006245120,'Delegated Proof of Stake');
 /*!40000 ALTER TABLE `cryptocurrency` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +53,7 @@ CREATE TABLE `exchange` (
   `name` varchar(50) NOT NULL,
   `country` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,6 +62,7 @@ CREATE TABLE `exchange` (
 
 LOCK TABLES `exchange` WRITE;
 /*!40000 ALTER TABLE `exchange` DISABLE KEYS */;
+INSERT INTO `exchange` VALUES (1,'Binance','China'),(2,'Bittrex','United States of America'),(3,'Bitmex','Seychelles'),(4,'Bitfinex','Virgin Islands'),(6,'Bitstamp','Slovenia');
 /*!40000 ALTER TABLE `exchange` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +84,7 @@ CREATE TABLE `price` (
   KEY `fk_exchange_id` (`exchange_id`),
   CONSTRAINT `fk_cryptocurrency_id` FOREIGN KEY (`cryptocurrency_id`) REFERENCES `cryptocurrency` (`id`),
   CONSTRAINT `fk_exchange_id` FOREIGN KEY (`exchange_id`) REFERENCES `exchange` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,6 +93,7 @@ CREATE TABLE `price` (
 
 LOCK TABLES `price` WRITE;
 /*!40000 ALTER TABLE `price` DISABLE KEYS */;
+INSERT INTO `price` VALUES (1,1,6,3856.64,'2019-03-07'),(2,1,6,3851.55,'2018-03-06'),(3,1,6,3844.07,'2018-03-05'),(4,1,6,3698.66,'2018-03-04'),(5,1,6,3789.52,'2018-03-03'),(6,1,6,3810.46,'2018-03-02'),(7,1,6,3807.05,'2018-03-01');
 /*!40000 ALTER TABLE `price` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -104,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-28 12:06:22
+-- Dump completed on 2019-03-08 11:23:35
