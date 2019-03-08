@@ -4,6 +4,7 @@ const mysql = require('mysql');
 let express = require('express');
 let http = require('http');
 let app = express();
+let jwt = require('jsonwebtoken');
 let bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -342,6 +343,61 @@ app.delete('/api/price/:id', (req, res) => {
         }
     });
 });
+
+app.get('/api', (req, res) => {
+    res.json({
+        message: 'Welcome to the API'
+    });
+});
+
+app.post('/api/posts', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'its_a_secret_to_everyone', (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            res.json({
+                message: 'Post created...',
+                authData
+            });
+        }
+    });
+});
+
+app.post('/api/login', (req, res) => {
+    // Mock user
+    let user = {
+        id: 1,
+        username: 'nick',
+        password: 'nick2019!'
+    }
+    // Signs the JSON Web Token with the private key (its_a_secret_to_everyone) which expires in 10 minutes!
+    jwt.sign({ user }, 'its_a_secret_to_everyone', { expiresIn: '10m' }, (err, token) => {
+        res.json({ token });
+    });
+});
+
+// Format of token
+// Authorization: Bearer <token_value>
+
+// Verify token
+function verifyToken(req, res, next) {
+    // Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    // Check if bearer is undefined
+    if (typeof bearerHeader !== 'undefined') {
+        // Split at the space
+        const bearer = bearerHeader.split(' ');
+        // Get token from array
+        const bearerToken = bearer[1];
+        // Set the token
+        req.token = bearerToken;
+        // Next middleware
+        next();
+    } else {
+        // Forbidden
+        res.sendStatus(403);
+    }
+}
 
 let server = app.listen(8081, () => {
     console.log("Rest app listening at http://%s:%s", server.address().address, server.address().port);
